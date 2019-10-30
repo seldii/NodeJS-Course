@@ -1,0 +1,29 @@
+.card__item-list {
+  width: 40rem;
+  max-width: 90%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin: auto;
+}
+.card__item {
+  padding: 1rem;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.card__item h1,
+.card__item h2 {
+  font-size: 1.3rem;
+}
+.card__item .btn {
+  color: rgb(160, 55, 55);
+  border: 1px solid rgb(184, 61, 61);
+}
+.card__item .btn:hover {
+  background-color: rgb(184, 61, 61);
+  color: white;
+}

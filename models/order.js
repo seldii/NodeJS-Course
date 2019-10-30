@@ -1,9 +1,9 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-//Define Cart Model
-//cart Table holds all the products from different users
-const Cart = sequelize.define("cart", {
+//Define cartItem Model
+
+const Order = sequelize.define("order", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -11,4 +11,4 @@ const Cart = sequelize.define("cart", {
     primaryKey: true
   }
 });
-module.exports = Cart;
+module.exports = Order;

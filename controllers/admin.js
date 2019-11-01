@@ -11,17 +11,15 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
   const { title, price, imageURL, description } = req.body;
 
-  //immediatetly store the product
-  //since there is an association created between user and product
-  //we can use an extra method to create a product related to a user
-  req.user
-    .createProduct({
-      title,
-      price,
-      imageURL,
-      description
+  //passing the data to the constructor of Ptoduct model
+  const product = new Product(title, price, imageURL, description);
+
+  product
+    .save()
+    .then(result => {
+      console.log("created product..");
+      res.redirect("/admin/products");
     })
-    .then(() => res.redirect("/admin/products"))
     .catch(err => console.log(err));
 };
 
@@ -32,12 +30,8 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect("/");
   }
   const { productId } = req.params;
-  req.user
-    .getProducts({ where: { id: productId } })
-    /* Product.findByPk(productId) */
-    .then(products => {
-      //since it returns an array we need to get the fisrt and single element of that array
-      const product = products[0];
+  Product.findById(productId)
+    .then(product => {
       if (!product) {
         //it is not the right for the sake of User Experience
         return res.redirect("/");
@@ -54,21 +48,19 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
   const { productId, title, price, imageURL, description } = req.body;
-  Product.findByPk(productId)
-    .then(product => {
-      product.title = title;
-      product.price = price;
-      product.imageURL = imageURL;
-      product.description = description;
-      return product.save();
+  const product = new Product(productId, title, price, imageURL, description);
+  product
+    .save()
+    .then(() => {
+      console.log("Updated");
+      res.redirect("/admin/products");
     })
-    .then(() => res.redirect("/admin/products"))
     .catch(err => console.log(err));
 };
 
 exports.postDeleteProduct = (req, res, next) => {
   const productId = req.body.productId;
-  Product.findByPk(productId)
+  Product.findById(productId)
     .then(product => {
       return product.destroy();
     })
@@ -77,8 +69,7 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  req.user
-    .getProducts()
+  Product.fetchAll()
     .then(products => {
       res.render("admin/products", {
         prods: products,

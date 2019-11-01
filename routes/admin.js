@@ -4,7 +4,7 @@ const adminController = require("../controllers/admin");
 
 Router.get("/add-product", adminController.getAddProduct);
 
-//get admin products
+//get admin products >> GET
 Router.get("/products", adminController.getProducts);
 
 //limiting middleware execution to POST request
